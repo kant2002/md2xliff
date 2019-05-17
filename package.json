@@ -42,7 +42,8 @@
     "remark-parse-yaml": "^0.0.2",
     "strip": "^3.0.0",
     "unified": "^6.1.5",
-    "xamel": "^0.3.1"
+    "xamel": "^0.3.1",
+    "xml-escape": "^1.1.0"
   },
   "devDependencies": {
     "mocha": "^3.5.0",
