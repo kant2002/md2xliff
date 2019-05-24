@@ -1031,6 +1031,7 @@ describe('extract', function() {
         it('should not split abbreviations', function() {
             const markdown = [
                 'First level heading i.e. h1.',
+                'First level heading (i.e. h1).',
                 'Заголовок первого уровня т.е. "h1".'
             ].join('\n');
 
@@ -1038,11 +1039,13 @@ describe('extract', function() {
 
             assert.equal(skeleton, [
                 '%%%1%%%',
-                '%%%2%%%'
+                '%%%2%%%',
+                '%%%3%%%'
             ].join('\n'));
 
             assertContent(xliff, [
                 'First level heading i.e. h1.',
+                'First level heading (i.e. h1).',
                 'Заголовок первого уровня т.е. "h1".'
             ]);
         });
