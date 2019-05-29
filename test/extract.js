@@ -580,6 +580,48 @@ describe('extract', function() {
                 '<bpt id="1">[</bpt><bpt id="2">![</bpt>IMAGE ALT<ept id="2">]</ept><bpt id="3">(</bpt>https://github.com/adam-p/markdown-here/raw/master/src/common/images/icon48.png<ept id="3">)</ept><ept id="1">]</ept><bpt id="4">(</bpt>https://www.youtube.com/watch?v=COwlqqErDbY<ept id="4">)</ept>'
             ]);
         });
+
+        it('should extract user-defined html tags', function() {
+            const markdown = ['# Extra HTML tags',
+                '',
+                '<details>',
+                '  <summary>Click to expand</summary>',
+                '',
+                '```bash',
+                'ln -s ../prosody-modules/mod_addressing/',
+                '```',
+                '',
+                'A paragraph inside **details** block.',
+                '',
+                '</details>',
+                '',
+                'A paragraph next to **details** block.'].join('\n');
+
+            const { skeleton, data: xliff } = extract(markdown, 'source.md', 'temp.skl.md', 'en-US', 'ru-RU', ['details', 'summary']);
+
+            assert.equal(skeleton, ['# %%%1%%%',
+                '',
+                '<details>',
+                '  <summary>%%%2%%%</summary>',
+                '',
+                '```bash',
+                'ln -s ../prosody-modules/mod_addressing/',
+                '```',
+                '',
+                '%%%3%%%',
+                '',
+                '</details>',
+                '',
+                '%%%4%%%'].join('\n'));
+
+            assertContent(xliff, [
+                'Extra HTML tags',
+                'Click to expand',
+                'A paragraph inside <bpt id="1">**</bpt>details<ept id="1">**</ept> block.',
+                'A paragraph next to <bpt id="1">**</bpt>details<ept id="1">**</ept> block.'
+            ]);
+        });
+
     });
 
     describe('inline markup', function() {

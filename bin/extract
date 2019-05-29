@@ -7,7 +7,7 @@ var fs = require('fs'),
 if (args.length < 3) {
     console.log([
         'USAGE:',
-        'extract path/to/source.md [path/to/target-xliff.xlf] [path/to/target-skeleton.md] [srcLang] [trgLang]',
+        'extract path/to/source.md [path/to/target-xliff.xlf] [path/to/target-skeleton.md] [srcLang] [trgLang] [additional html tags]',
         'Example:',
         'extract source.md source.xlf source.skl.md ru-RU en-US'
     ].join('\n'));
@@ -22,8 +22,15 @@ var markdownFileName = args[2],
     skeletonFilename = args[4] || fileNameWithoutExt + '.skl.md',
     srcLang = args[5] || 'ru-RU',
     trgLang = args[6] || 'en-US',
+    extraHtmlTags = [];
 
-    extracted = extract(sourceMd, markdownFileName, skeletonFilename, srcLang, trgLang);
+if (args.length > 7) {
+    for (var i = 7; i < args.length; i++) {
+        extraHtmlTags.push(args[i]);
+    }
+}
+
+var extracted = extract(sourceMd, markdownFileName, skeletonFilename, srcLang, trgLang, extraHtmlTags);
 
 fs.writeFileSync(xliffFilename, extracted.xliff);
 fs.writeFileSync(skeletonFilename, extracted.skeleton);

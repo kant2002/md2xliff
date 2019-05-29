@@ -39,6 +39,14 @@ All modules have JS API and a CLI.
 
 To extract XLIFF and generate skeleton run `./bin/extract test/source.md`.
 
+The `extract` command have multiple optional arguments. For example it allows to set **source** and **destination** languages, as well as specify **extra HTML tags** used in your markdown document.
+
+Full syntax:
+
+```bash
+extract path/to/source.md [path/to/target-xliff.xlf] [path/to/target-skeleton.md] [srcLang] [trgLang] [additional html tags]
+```
+
 ### Step 2 — translate
 
 To translate XLIFF file you can use a text editor or any CAT tools ([MateCat](https://www.matecat.com ), [Swordfish](http://www.maxprograms.com/products/swordfish.html)).
