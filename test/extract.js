@@ -447,6 +447,36 @@ describe('extract', function() {
             });
         });
 
+        it('should extract single line comments from LUA', function() {
+            const markdown = [
+                '```lua',
+                '-- Single line comments in LUA start with `--`',
+                '-- Comments. Comments? Comments!',
+                '-----------------------------------------------',
+                'abc = 5; -- the abc variable is set to 5',
+                '```'
+            ].join('\n');
+
+            const { skeleton, data: xliff } = extract(markdown);
+
+            assert.equal(skeleton, [
+                '```lua',
+                '-- %%%1%%%',
+                '-- %%%2%%% %%%3%%% %%%4%%%',
+                '-----------------------------------------------',
+                'abc = 5; -- %%%5%%%',
+                '```'
+            ].join('\n'));
+
+            assertContent(xliff, [
+                'Single line comments in LUA start with `--`',
+                'Comments.',
+                'Comments?',
+                'Comments!',
+                'the abc variable is set to 5'
+            ]);
+        });
+
         describe('tables', function() {
             it('should extract tables', function() {
                 const markdown = [
