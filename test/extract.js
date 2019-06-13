@@ -477,6 +477,38 @@ describe('extract', function() {
             ]);
         });
 
+        it('should pass MERMAID line by line', function() {
+            const markdown = [
+                '```mermaid',
+                'graph TD;',
+                '    A-->B;',
+                '    A-->C;',
+                '    B-->D;',
+                '    C-->D;',
+                '```'
+            ].join('\n');
+
+            const { skeleton, data: xliff } = extract(markdown);
+
+            assert.equal(skeleton, [
+                '```mermaid',
+                '%%%1%%%',
+                '    %%%2%%%',
+                '    %%%3%%%',
+                '    %%%4%%%',
+                '    %%%5%%%',
+                '```'
+            ].join('\n'));
+
+            assertContent(xliff, [
+                'graph TD;',
+                'A-->B;',
+                'A-->C;',
+                'B-->D;',
+                'C-->D;'
+            ]);
+        });
+
         describe('tables', function() {
             it('should extract tables', function() {
                 const markdown = [
